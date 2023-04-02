@@ -1,5 +1,4 @@
 ﻿
-
 namespace HomeWork3
 {
     public class Ophthalmologist : Doctor, IDoctor
@@ -14,19 +13,19 @@ namespace HomeWork3
             int value = rnd.Next(1, 3);
             if (value == 1)
             {
-             patient.ophthalmologistStatus = Patient.HealthStatus.Health; 
+             patient.OphthalmologistStatus = Patient.HealthStatus.Health; 
             }
             else
             {
-                patient.ophthalmologistStatus = Patient.HealthStatus.Sick;
+                patient.OphthalmologistStatus = Patient.HealthStatus.Sick;
             }
         }
 
         public override void Cure(Patient patient)
         {
-            if (patient.ophthalmologistStatus == Patient.HealthStatus.Sick)
+            if (patient.OphthalmologistStatus == Patient.HealthStatus.Sick)
             {
-                patient.ophthalmologistStatus = Patient.HealthStatus.Health;
+                patient.OphthalmologistStatus = Patient.HealthStatus.Health;
             }
         }
     }

@@ -12,18 +12,18 @@ public class Dentist : Doctor, IDoctor
         int value = rnd.Next(1, 3);
         if (value == 1)
         {
-            patient.dentistStatus = Patient.HealthStatus.Health;
+            patient.DentistStatus = Patient.HealthStatus.Health;
         }
         else
         {
-            patient.dentistStatus = Patient.HealthStatus.Sick;
+            patient.DentistStatus = Patient.HealthStatus.Sick;
         }
     }
     public override void Cure(Patient patient)
     {
-        if (patient.dentistStatus == Patient.HealthStatus.Sick)
+        if (patient.DentistStatus == Patient.HealthStatus.Sick)
         {
-            patient.dentistStatus = Patient.HealthStatus.Health;
+            patient.DentistStatus = Patient.HealthStatus.Health;
         }
     }
 }

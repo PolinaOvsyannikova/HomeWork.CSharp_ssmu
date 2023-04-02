@@ -1,22 +1,22 @@
 ﻿public class Patient
 {
-    public string name { get; set; }
-    public int age { get; set; }
-    public string address { get; set; }
-    public HealthStatus ophthalmologistStatus { get; set; }
-    public HealthStatus dentistStatus { get; set; }
+    public string Name { get; set; }
+    public int Age { get; set; }
+    public string Address { get; set; }
+    public HealthStatus OphthalmologistStatus { get; set; }
+    public HealthStatus DentistStatus { get; set; }
 
-    public Patient(string Name, int Age, string Address)
+    public Patient(string name, int age, string address)
     {
-        name = Name;
-        age = Age;
-        address = Address;
-        ophthalmologistStatus = HealthStatus.NonDiagnostics;
-        dentistStatus = HealthStatus.NonDiagnostics;
+        Name = name;
+        Age = age;
+        Address = address;
+        OphthalmologistStatus = HealthStatus.NonDiagnostics;
+        DentistStatus = HealthStatus.NonDiagnostics;
     }
     public void DisplayInfo()
     {
-        Console.WriteLine($"Информация о пациенте:{name}, {age} лет, адрес:{address} диагностика у стоматолога: {dentistStatus}, диагностика у офтальмолога: {ophthalmologistStatus} ");
+        Console.WriteLine($"Информация о пациенте: {Name}, {Age} лет, адрес:{Address}, диагностика у стоматолога: {DentistStatus}, диагностика у офтальмолога: {OphthalmologistStatus}");
     }
     public enum HealthStatus
     {

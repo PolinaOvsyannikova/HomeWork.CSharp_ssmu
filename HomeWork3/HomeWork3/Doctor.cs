@@ -1,29 +1,28 @@
-﻿ public class Doctor
+﻿public class Doctor
 {
-    public string name { get; set; }
-    public int age { get; set; }
-    public int experience { get; set; }
-    public string specialization { get; set; }
+    public string Name { get; set; }
+    public int Age { get; set; }
+    public int Experience { get; set; }
+    public string Specialization { get; set; }
 
-    public Doctor (string Name, int Age, int Experience, string Specialization)
+    public Doctor(string name, int age, int experience, string specialization)
     {
-        name = Name; 
-        age = Age;
-        experience = Experience;
-        specialization = Specialization;
+        Name = name;
+        Age = age;
+        Experience = experience;
+        Specialization = specialization;
     }
     public virtual void DisplayInfo()
     {
-        Console.WriteLine($"Информация о враче: имя: {name}, возраст: {age} стаж работы: {experience} специализация: {specialization}");
+        Console.WriteLine($"Информация о враче: имя: {Name}, возраст: {Age} стаж работы: {Experience} специализация: {Specialization}");
     }
 
     public virtual void Diagnosis(Patient patient)
     {
         Console.WriteLine("Направить на диагностику к врачу с конкретной специализацией");
     }
-    public  virtual void Cure (Patient patient)
+    public virtual void Cure(Patient patient)
     {
         Console.WriteLine("Направить на лечение к врачу с конкретной специализацией");
     }
-
 }
