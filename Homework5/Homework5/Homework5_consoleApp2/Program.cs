@@ -1,39 +1,54 @@
 ﻿
 using Common;
+using System.Reflection.Metadata.Ecma335;
 
-string path = Environment.ExpandEnvironmentVariables("%appData%//Lesson12Homework.txt");
-using var pathReader = new StreamReader(path);
-
-var csvPath = pathReader.ReadToEnd();
-
-using var csvReader = new StreamReader(csvPath);
-var csvData = csvReader.ReadToEnd();
-
-List<Record> records = new List<Record>();
-
-try
+public class Program
 {
-    string[] stringRecords = csvData.Split('\n');
-    foreach (string stringRecord in stringRecords)
+    public static async Task Main()
     {
-        if (!string.IsNullOrWhiteSpace(stringRecord))
+        string path = Environment.ExpandEnvironmentVariables("%appData%//Lesson12Homework.txt");
+
+        List<Record> records = new List<Record>();
+        try
         {
-            string[] innerData = stringRecord.Split(';');
-            records.Add(new Record(innerData[0], innerData[1], DateTime.Parse(innerData[2])));
+            var csvData = await PathAndCsvReader(path);
+            string[] stringRecords = csvData.Split('\n');
+            foreach (string stringRecord in stringRecords)
+            {
+                if (!string.IsNullOrWhiteSpace(stringRecord))
+                {
+                    string[] innerData = stringRecord.Split(';');
+                    records.Add(new Record(innerData[0], innerData[1], DateTime.Parse(innerData[2])));
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
+        records.OrderBy(x => x.LastWriteTime);
+
+        // надеюсь я правильно поняла комментарий "Проще было вывести одной таблицей в формате: Тип файла, Имя файла, Время изменения"
+
+        foreach (var record in records)
+        {
+            Console.WriteLine($"{record.Type}\t{record.Name}\t{record.LastWriteTime}\n");
+        }
+
+        if (File.Exists(path))
+        {
+            File.Delete(path);
         }
     }
-}
-catch
-{
-    Console.WriteLine("Файл повреждён");
+    public static async Task<string> PathAndCsvReader(string path)
+    {
+        using var pathReader = new StreamReader(path);
+        var csvPath = await pathReader.ReadToEndAsync();
+        using var csvReader = new StreamReader(csvPath);
+        var csvData = await csvReader.ReadToEndAsync();
+        return csvData;
+    }
 }
 
-records.OrderBy(x=>x.LastWriteTime);
 
-foreach(var record in records)
-{
-    Console.WriteLine($"Тип файла - {record.Type}");
-    Console.WriteLine($"Имя файла - {record.Name}");
-    Console.WriteLine($"Время последнего изменения файла - {record.LastWriteTime}");
-    Console.WriteLine();
-}

@@ -15,13 +15,9 @@ public class Program
 
         try
         {
-            if (!Directory.Exists(_folderPath))
-            {
-                Directory.CreateDirectory(_folderPath);
-                ZipFile.ExtractToDirectory($"{_zipPath}", $"{_folderPath}");
-            }
+            ExtractZip(_folderPath, _zipPath);
         }
-      catch (Exception ex) 
+        catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
         }
@@ -35,13 +31,28 @@ public class Program
             Directory.Delete(_folderPath, true);
         }
 
-        string path2 = Environment.ExpandEnvironmentVariables("%appData%//Lesson12Homework.txt");
+        string path = Environment.ExpandEnvironmentVariables("%appData%//Lesson12Homework.txt");
 
-        File.Create(path2).Close();
-        
-        using var streamWriter = new StreamWriter(path2);
-
-        streamWriter.Write(_filePath);
+        try
+        {
+            CreateAndWriteFile(path, _filePath);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+    static void ExtractZip(string folderPath, string zipPath)
+    {
+        if (!Directory.Exists(folderPath) && File.Exists(zipPath))
+        {
+            Directory.CreateDirectory(folderPath);
+            ZipFile.ExtractToDirectory($"{zipPath}", $"{folderPath}");
+        }
+        if (Directory.Exists(folderPath) && File.Exists(zipPath))
+        {
+            ZipFile.ExtractToDirectory($"{zipPath}", $"{folderPath}");
+        }
     }
     static List<Record> ShowDirectoryAndFile(string path)
     {
@@ -49,7 +60,7 @@ public class Program
         foreach (var element in Directory.GetDirectories(path))
         {
             FileInfo fileInfo = new FileInfo(element);
-            records.Add(new Record("Folder",fileInfo.Name, fileInfo.LastWriteTime));
+            records.Add(new Record("Folder", fileInfo.Name, fileInfo.LastWriteTime));
         }
 
         foreach (var element in Directory.GetFiles(path))
@@ -60,11 +71,9 @@ public class Program
         return records;
     }
     static void CreateAndWriteCSVFile(string path, List<Record> records)
-    {
+    { 
         File.Create(path).Dispose();
-
         var stringOfRecords = ConvertListRecordsToString(records);
-
         File.AppendAllText(path, stringOfRecords);
     }
     static string ConvertListRecordsToString(List<Record> record)
@@ -81,10 +90,16 @@ public class Program
         }
         return stringBuilder.ToString();
     }
+    static public async Task CreateAndWriteFile(string path, string contents)
+    {
+        File.Create(path).Close();
+        await using var streamWriter = new StreamWriter(path);
+        await streamWriter.WriteAsync(contents);
+    }
 }
 
 
 
- 
+
 
 
